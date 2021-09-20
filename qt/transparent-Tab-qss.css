@@ -1,0 +1,19 @@
+#TransParent{
+	border-image: url(:/new/image/gta.jpg);
+}
+QTabWidget{
+	background: transparent;
+}
+QTabWidget::pane{
+	border: none;
+}
+QTabBar::tab{
+	color: white;
+	min-width:100px;
+	min-height:50px;
+	background:transparent;
+}
+QTabBar::tab:selected{
+	color: rgb(36,197,219);
+	background: green;
+}
