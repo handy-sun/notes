@@ -44,7 +44,7 @@ sudo passwd
 # 用户username 使用sudo命令时不需要输入sudo密码（确保系统安全）
 sudo gedit /etc/sudoers
 # 以下命令放在 "#includedir /etc/sudoers.d" 上一行，务必检查拼写是否无误!
-username  ALL=(ALL) NOPASSWD:ALL
+<username>  ALL=(ALL) NOPASSWD:ALL
 ```
 
 ## 4. <font color="#e06c75" size="4"> 解决时间不对的问题(一般表现为快8小时)</font>
@@ -103,8 +103,26 @@ sudo cp /usr/lib/x86_64-linux-gnu/qt5/plugins/platforminputcontexts/libfcitxplat
 # 路径2（可能非必要）
 sudo cp /usr/lib/x86_64-linux-gnu/qt5/plugins/platforminputcontexts/libfcitxplatforminputcontextplugin.so /opt/Qt5.12.8/5.12.8/gcc_64/plugins/platforminputcontexts/
 ```
-重启Qt即可
+<font size="4">**重启Qt即可生效**</font>
 
+## 8. <font color="#e06c75" size="4"> 显示器设置添加未含有的分辨率(如:1920x1080) </font>
+终端中输入以下命令:
+```bash
+# 输入命令后，复制输出 Modeline 后边的内容
+cvt 1920 1080
+# 查看显示器的名称, 记住primary的显示器名称
+xrandr 
+```
+
+```bash
+# 执行命令 xrandr --newmode 复制内容, 例如
+xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
+# 执行命令 xrandr --addmode 显示器名称 复制内容双引号中的内容
+xrandr --addmode Virtual1 "1920x1080_60.00"
+# 选择此分辨率
+xrandr -s 1920x1080
+```
+> 重启系统后，此分辨率仍没有，将以上三条命令添加到 /etc/profile 中，即可每次开机都设为此分辨率
 
 
 ----------------------
