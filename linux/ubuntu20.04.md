@@ -42,7 +42,7 @@ xdg-user-dirs-gtk-update
 # 设置su密码
 sudo passwd
 # 用户username 使用sudo命令时不需要输入sudo密码（确保系统安全）
-sudo gedit /etc/sudoers
+sudo vi /etc/sudoers
 # 以下命令放在 "#includedir /etc/sudoers.d" 上一行，务必检查拼写是否无误!
 <username>  ALL=(ALL) NOPASSWD:ALL
 ```
@@ -64,9 +64,9 @@ sudo ./qt-opensource-linux-x64-5.12.8.run
 # 安装gcc编译工具包
 sudo apt install build-essential 
 # qt添加到环境变量（当前用户）
-sudo gedit ~/.bashrc
+sudo vi ~/.bashrc
 # qt添加到环境变量（root）
-sudo gedit /etc/profile
+sudo vi /etc/profile
 ----------文件末尾追加以下内容-------------
 export QTDIR=/opt/Qt5.12.8
 export PATH=$QTDIR/5.12.8/gcc_64/bin:$PATH
