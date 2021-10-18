@@ -1,8 +1,5 @@
 # **Ubuntu20.04(LTS) 个人推荐配置方案**
 
-- <font color="#e06c75" size="3">红色标题：表示推荐的操作</font> 
-- <font color="#66ccdd" size="3">青色标题：表示在VMWare虚拟机中的操作</font>
-
 ---
 <!-- vscode-markdown-toc -->
 
@@ -13,11 +10,19 @@
 <!-- /vscode-markdown-toc -->
 
 ## 1. <font color="#66ccdd" size="4"> 若系统在虚拟机中，安装 vmware-tools</font>
-```bash
-sudo apt update
-sudo apt install -y open-vm-tools-desktop
-```
-### (另一种安装方法参见 vmvare-tool.pdf)
+
+### (1) 点击虚拟机上方菜单栏的“虚拟机(M)”->点击“(重新)安装 VMware Tools”
+
+### (2) 打开vmware tools安装介质(光盘镜像的图标)。将 vmwaretools.tar.gz压缩包移动到其他目录后进行解压
+
+### (3) 打开解压后的vmwaretools文件夹，右键点击vmware-tools-distrib文件夹，选择“在终端打开”
+
+### (4) 在终端的命令窗口当中，输入 `sudo ./vmware-install.pl` 命令。开始安装
+
+### (5) 在安装过程中会弹出`“yes/no”` 以及各种路径的选项。推荐操作：遇到二选一输入 `yes`, 遇到路径直接回车(选择默认路径)
+
+### (6) 重启虚拟机后，鼠标和复制粘贴就生效了。
+
 
 ## 2. <font color="#e06c75" size="4"> /home/user 下中文目录改为英文(如果安装时选择语言为中文的话)</font>
 终端执行：
