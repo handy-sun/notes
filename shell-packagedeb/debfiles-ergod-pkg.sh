@@ -13,7 +13,7 @@ function down_check_move(){
     deb_count=$(ls *.deb 2>/dev/null | wc -l)
 
     if [ "$deb_count" == "0" ]; then
-        echo -e "\033[33m[Warning]\033[0m $deb_name install failed." 
+        echo -e "\033[31m[Error]\033[0m $deb_name install failed." 
         return 250
     fi
 

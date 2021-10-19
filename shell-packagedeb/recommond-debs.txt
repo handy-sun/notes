@@ -1,5 +1,7 @@
 vim
 git
+git-man
+liberror-perl
 cmake
 ruby
 ninja-build
@@ -21,6 +23,7 @@ fzf
 enca
 imwheel
 screenfetch
+powerline
 sdcv
 qstardict
 gperf

@@ -3,7 +3,7 @@ function down_and_move(){
     pkg_dir="$2/$1"
     if [ -x $pkg_dir ]; then
         if [ `ls $pkg_dir/*.deb 2>/dev/null | wc -l` != "0" ]; then
-            echo ">>> $1 might has already been downloaded and moved."        
+            echo -e "\033[33m[Warning]\033[0m $1 might has already been downloaded and moved."        
             return 2
         fi
     fi
@@ -13,13 +13,14 @@ function down_and_move(){
     deb_count=$(ls *.deb 2>/dev/null | wc -l)
 
     if [ "$deb_count" == "0" ]; then
-        echo ">>> $1 install failed."
+        echo -e "\033[31m[Error]\033[0m $1 install failed."
         return 3
     fi
 
     sudo mkdir -p $pkg_dir
     sudo mv ./*.deb $pkg_dir
     sudo chmod 777 $pkg_dir -R
+    echo -e "\033[32m[Info]\033[0m $1 download successfully (include $deb_count debfile)."
     return 0
 }
 
@@ -42,6 +43,6 @@ fi
 for x in ${arr[@]}; do
     echo "------ $x ------" 
     down_and_move $x $root_dir
-    value=$?
-    echo "return value = $value"
+    # value=$?
+    # echo "return value = $value"
 done
