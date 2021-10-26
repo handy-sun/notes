@@ -24,11 +24,13 @@ enca
 imwheel
 screenfetch
 lsb-release
+nautilus
 powerline
 sdcv
 qstardict
 gperf
 pcscd
+python-is-python3
 openssh-server
 vlc
 ffmpeg
