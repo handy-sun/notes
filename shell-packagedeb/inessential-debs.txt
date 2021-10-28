@@ -1,6 +1,0 @@
-git-cola
-wireshark
-gimp
-audacity
-fcitx-googlepinyin
-build-essential

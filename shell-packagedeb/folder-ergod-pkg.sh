@@ -26,7 +26,7 @@ function down_and_move(){
 
 # begin
 sudo apt-get clean
-root_dir="/offline"
+root_dir="/offline/major"
 if [ ! -x "$root_dir" ]; then
     sudo mkdir -p "$root_dir"
 fi
