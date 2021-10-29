@@ -6,13 +6,14 @@ sudo mkdir -p /offline
 sudo cp -r /var/cache/apt/archives/ offline/
 sudo chmod 777 -R offline/
 sudo dpkg-scanpackages /offline/ /dev/null | gzip > /offline/Packages.gz
-for i in `seq 1 16`; do sudo dpkg-scanpackages /offline/major /dev/null | gzip > /offline/major/Packages.gz & done
+for i in `seq 1 15`; do sudo dpkg-scanpackages /offline/major /dev/null | gzip > /offline/major/Packages.gz & done
 for i in `seq 1 $(cat /proc/cpuinfo |grep "physical id" |wc -l)`; do sudo dpkg-scanpackages /offline/major /dev/null | gzip > /offline/major/Packages.gz & done
 
 # 将debs文件夹拷到离线机器的根目录下，修改系统源source.list（注意备份）
-sudo vim /etc/apt/sources.list
+sudo vi /etc/apt/sources.list
 # 指定路径，注意要相同
-deb [trusted=yes] file:/// offline/
+deb [trusted=yes] file:/// offline/pre/
+deb [trusted=yes] file:/// offline/major/
 
 
 2.sed命令下批量替换文件内容

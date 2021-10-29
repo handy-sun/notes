@@ -16,9 +16,13 @@ openssh-server
 im-config
 indicator-sysmonitor
 nautilus
+python-dev
 python-is-python3
 iptux
 samba
+catfish
+fsearch
+valgrind
 vlc
 ffmpeg
 xfce4 

@@ -1,5 +1,3 @@
-python-dev
-libboost-all-dev
 libicu-dev
 mpi-default-dev
 libbz2-dev
@@ -22,7 +20,6 @@ libdbus-1-dev
 libfontconfig1-dev
 libcap-dev
 libxtst-dev
-libpulse-dev
 libudev-dev
 libpci-dev
 libnss3-dev
