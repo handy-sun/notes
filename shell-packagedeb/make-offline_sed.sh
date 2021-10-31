@@ -35,8 +35,8 @@ sed -r "s/[(][^)]*[)]//g"
 dpkg -I $1 | grep Depends | sed 's/Depends://g' | sed -r "s/[(][^)]*[)]//g" | tr "| ," " "
 
 # tar+pigz 压缩
-sudo tar cvf - /offline/ | pigz -9 -p 16 > ~/offline.tgz
+sudo tar cvf - /major/ | pigz -9 -p 16 > ~/major.tgz
 # tar+pigz 解压
-sudo tar xvpf offline.tgz --use-compress-program=pigz -C /
+sudo tar xvpf major.tgz --use-compress-program=pigz -C /offline
 
 du /offline/ --max-depth=1 -lh | sort -sh

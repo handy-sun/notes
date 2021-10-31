@@ -15,6 +15,10 @@ gperf
 openssh-server
 im-config
 indicator-sysmonitor
+libxinerama-dev
+libpam-cracklib
+silversearcher-ag
+ccache
 nautilus
 python-dev
 python-is-python3
