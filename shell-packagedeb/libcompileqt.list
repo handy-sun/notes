@@ -26,3 +26,7 @@ libnss3-dev
 libasound2-dev
 libxss-dev
 libegl1-mesa-dev
+libboost-graph-dev
+libboost-iostreams-dev
+libboost-log-dev
+libboost-regex-dev
