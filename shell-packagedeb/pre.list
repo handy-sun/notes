@@ -1,4 +1,6 @@
 apt-rdepends
+build-essential
+xdg-user-dirs-gtk
 docker
 dpkg-dev
 enca
