@@ -8,7 +8,11 @@ fzf
 gnupg
 imwheel
 lsb-release
+mlocate
 net-tools
+ntp
+telnet
+tree
 p7zip-full
 pcscd
 pigz
