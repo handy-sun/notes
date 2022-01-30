@@ -21,3 +21,11 @@ Windows 默认开启了【节电模式】，致使USB接口zhi供电不足，使
 可能是通过资源管理器刻录光盘的时候留下的垃圾。
 
 删除下边的目录即可C:\Users\%USER%\AppData\Local\Microsoft\Windows\Burn\Temporary\Burn Folder
+
+## 四、WSL2桌面环境配置
+在子系统 ~/.bashrc 后追加以下内容
+
+```bash
+export DISPLAY=$(grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'):0
+export XDG_SESSION_TYPE=x11
+```

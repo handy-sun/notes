@@ -4,6 +4,7 @@ xdg-user-dirs-gtk
 docker
 dpkg-dev
 enca
+ethtool
 fzf
 gnupg
 imwheel
@@ -14,6 +15,7 @@ ntp
 telnet
 tree
 p7zip-full
+patchelf
 pcscd
 pigz
 powerline
@@ -22,3 +24,4 @@ screenfetch
 unzip
 xclip
 zip
+zsync
