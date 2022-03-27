@@ -159,7 +159,7 @@ echo "core_%e_%p_%s_%t" > /proc/sys/kernel/core_pattern
 sysctl -w kernel.core_pattern=core_%e_%p_%s_%t
 ```
 
-更改保存位置及永久生效
+更改保存位置及永久生效（经测试暂无法永久生效）
 ```bash
 # 可以将core文件统一生成到/var/crash目录下
 sysctl -w "kernel.core_pattern=/var/crash/core_%e_%p_%s_%t" >> /etc/sysctl.conf
