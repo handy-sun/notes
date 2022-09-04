@@ -17,7 +17,7 @@ git commit -m '提交的内容介绍'
 ```
 
 5. 关联到远程库
-```	
+```
 git remote add origin  https://github.com/FanVV/king.github.io.git
 ```
 

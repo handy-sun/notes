@@ -142,13 +142,17 @@ coredump文件`默认存储位置与可执行文件在同一目录下`，文件�
 
 可以通过/proc/sys/kernel/core_pattern进行设置。
 
-%e 出Core进程对应的可执行文件名
+%e: 出Core进程对应的可执行文件名
 
-%p 出Core进程的PID%u 出Core进程的UID
+%p: 出Core进程的PID%u 出Core进程的UID
 
-%s 造成Core的signal号
+%g: real gid of the process
 
-%t 出Core的时间，从1970-01-01 00:00:00开始的秒数
+%h: host name
+
+%s: 造成Core的signal号
+
+%t: 出Core的时间，从1970-01-01 00:00:00开始的秒数
 
 
 通过以下方式设定格式（root用户）
