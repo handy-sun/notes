@@ -170,12 +170,12 @@ cat id_rsa.pub
 
 ```bash
 # 登录用户为test
-cd /home/test
+cd /home/sunq
 vim .gitconfig
 --------------------
 [user]
-name = test
-email = test@126.com
+name = sooncheer
+email = 704169722@qq.com
 -------------------
 ```
 
@@ -186,17 +186,17 @@ email = test@126.com
 2. 修改ssh配置信息，config文件，在实际使用中gitlab对外的ssh连接端口不一定为22，若为其他端口号，则需要对其进行配置。
 ```bash
 #当前登录linux系统用户名为 test
-cd /home/test/.ssh
+cd /home/sunq/.ssh
 #该目录下有我们生产的id_rsa和id_rsa.pub
 生成文件config
 vim config
 
 配置我们的config信息如下:
-Host  gitlab.com
-HostName gitlab.com
+Host  gitee.com
+HostName gitee.com
 Port 8177
-User jenkins
-IdentityFile /home/develop/.ssh/id_rsa
+User sooncheer
+IdentityFile /home/sunq/.ssh/gee
 IdentitiesOnly yes
 ```
 
