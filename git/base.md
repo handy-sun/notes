@@ -97,6 +97,7 @@ git pull
 ### 快速流程
 
 上面是比较安全的做法，如果你可以确定什么都没有改过只是更新本地代码
+
 ```bash
 git pull
 
@@ -118,15 +119,18 @@ cd ~/.ssh
 可以看到目录下是否存在id_rsa.pub 或 id_dsa.pub 文件，存在说明已经生成过sshkey。但无论是否存在，可以选择使用以前的sshkey或创建sshkey覆盖之前生成的key。
 
 ### 二、 创建一个ssh key
+
 ```
 ssh-keygen -t rsa -C "your_email@example.com"
 ```
+
 代码参数含义：
 -t  指定密钥类型，默认是 rsa ，可以省略。
 -C 设置注释文字，比如邮箱，可以省略。
 -f  指定密钥文件存储文件名。
 
  参数全省略即为：
+
 ```
 ssh-keygen
 ```
@@ -165,11 +169,10 @@ cat id_rsa.pub
 以上为ssh key配置简单步骤，参考git添加ssh key步骤。
 
 ### 四、 配置
-   
+
 1. 配置git全局配置信息
 
 ```bash
-# 登录用户为test
 cd /home/sunq
 vim .gitconfig
 --------------------
@@ -179,13 +182,13 @@ email = 704169722@qq.com
 -------------------
 ```
 
-可以在该文件中配置user信息，这样一来每个项目中不用再单独使用git config user.name 和git config user.email配置用户信息了
+可以在该文件中配置user信息，这样一来每个项目中不用再单独(找到项目所在目录下的 .git/文件夹)使用git config user.name 和git config user.email配置用户信息了
 
 可以使用 git config --list 或 git config --edit 该项目中的git配置信息，将会看到我们配置的user信息。
 
 2. 修改ssh配置信息，config文件，在实际使用中gitlab对外的ssh连接端口不一定为22，若为其他端口号，则需要对其进行配置。
+
 ```bash
-#当前登录linux系统用户名为 test
 cd /home/sunq/.ssh
 #该目录下有我们生产的id_rsa和id_rsa.pub
 生成文件config
