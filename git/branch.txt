@@ -1,0 +1,23 @@
+一. 初次使用流程
+
+1.使用以下命令同步远端的分支到本地
+
+git remote update origin --p
+
+2.查看所有分支是否包含所要找的远端分支: remote/origin/tdhtest
+
+git branch -a
+
+3.拉取远端分支到本地
+
+git pull origin tdhtest
+
+4.切换分支，注意：切换前记得commit或stash，防止没有add的代码丢失
+
+git checkout tdhtest
+
+
+二. 分支pull/push/merge
+
+在 tdhtest 分支上
+git merge x12-r1.0-ch
