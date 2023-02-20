@@ -1,4 +1,6 @@
-# 本地创建并上传到服务器
+# git 网站上一些基本配置操作
+
+## 一、本地创建并上传到服务器
 
 1. 本机window系统的话先下载msys git  下载后在开始菜单里面找到  
 "Git --> Git Bash" 进入命令
@@ -18,7 +20,7 @@ git commit -m '提交的内容介绍'
 
 5. 关联到远程库
 ```
-git remote add origin  https://github.com/FanVV/king.github.io.git
+git remote add origin  https://github.com/XXXX/xxxx.git
 ```
 
 6. 获取远程库与本地同步合并（如果远程库里有文件，必须先执行此命令，否则后续会提交会失败）
@@ -31,7 +33,7 @@ git pull --rebase origin master
 git push -u origin master
 ```
 
-## Clone 到本地
+## 二、Clone 到本地
 
 1. 选择目标路径的上一级文件夹，右键 git bash.
     
@@ -46,7 +48,7 @@ git remote add origin/master 项目地址
 git clone 项目地址
 ```
 
-## github clone速度太慢的解决办法 
+## 二（附）、github clone速度太慢的解决办法 
 思路：
 
 git clone特别慢是因为github.global.ssl.fastly.net域名被限制了。  
@@ -77,9 +79,9 @@ git clone --depth=1 https://…
 ```
 来自 <https://blog.csdn.net/qq_15110681/article/details/94415946> 
 
-## 更新到本地
+## 三、更新到本地
 
-### 正规流程
+### 1.正规流程
 ```bash
 # 查看本地分支文件信息，确保更新时不产生冲突
 git status
@@ -94,7 +96,7 @@ git pull
 ```
 
 
-### 快速流程
+### 2.快速流程
 
 上面是比较安全的做法，如果你可以确定什么都没有改过只是更新本地代码
 
@@ -110,15 +112,15 @@ git branck aaa
 git chechout -b aaa 
 ```
 
-## 创建 ssh
+## 四、创建 ssh
 
-### 一、 在.ssh文件下运行 git Bash，或者输入如下代码跳转到此目录：
+### 1. 在.ssh文件下运行 git Bash，或者输入如下代码跳转到此目录：
 ```
 cd ~/.ssh
 ```
 可以看到目录下是否存在id_rsa.pub 或 id_dsa.pub 文件，存在说明已经生成过sshkey。但无论是否存在，可以选择使用以前的sshkey或创建sshkey覆盖之前生成的key。
 
-### 二、 创建一个ssh key
+### 2. 创建一个ssh key
 
 ```
 ssh-keygen -t rsa -C "your_email@example.com"
@@ -154,23 +156,23 @@ ssh-keygen
 
 当你看到上面这段代码的收，那就说明，你的 SSH key 已经创建成功，你只需要添加到github的SSH key上就可以了。
 
-### 三、 添加你的ssh key到gitlab或github上面去
+### 3. 添加你的ssh key到gitlab或github上面去
 
-1. 首先你需要拷贝 id_rsa.pub 文件的内容：在.ssh文件下执行命令
+(1) 首先你需要拷贝 id_rsa.pub 文件的内容：在.ssh文件下执行命令
 ```
 cat id_rsa.pub
 ```
 即可显示公钥的内容，按`ctrl+insert`复制密钥内容
 
-2. 登录你的github账号，从又上角的设置（ Account Settings ）进入，然后点击菜单栏的 SSH key 进入页面添加 SSH key。
+(2) 登录你的github账号，从又上角的设置（ Account Settings ）进入，然后点击菜单栏的 SSH key 进入页面添加 SSH key。
 
-3. 点击 Add SSH key 按钮添加一个 SSH key 。把你复制的 SSH key 代码粘贴到 key 所对应的输入框中，记得 SSH key 代码的前后不要留有空格或者回车。当然，上面的 Title 所对应的输入框你也可以输入一个该 SSH key 显示在 github 上的一个别名。默认的会使用你的邮件名称。
+(3) 点击 Add SSH key 按钮添加一个 SSH key 。把你复制的 SSH key 代码粘贴到 key 所对应的输入框中，记得 SSH key 代码的前后不要留有空格或者回车。当然，上面的 Title 所对应的输入框你也可以输入一个该 SSH key 显示在 github 上的一个别名。默认的会使用你的邮件名称。
 
 以上为ssh key配置简单步骤，参考git添加ssh key步骤。
 
-### 四、 配置
+### 4. 配置ssh
 
-1. 配置git全局配置信息
+#### (1) 配置git全局配置信息
 
 ```bash
 cd /home/sunq
@@ -178,7 +180,7 @@ vim .gitconfig
 --------------------
 [user]
 name = sooncheer
-email = 704169722@qq.com
+email = handy-sun@foxmail.com
 -------------------
 ```
 
@@ -186,7 +188,7 @@ email = 704169722@qq.com
 
 可以使用 git config --list 或 git config --edit 该项目中的git配置信息，将会看到我们配置的user信息。
 
-2. 修改ssh配置信息，config文件，在实际使用中gitlab对外的ssh连接端口不一定为22，若为其他端口号，则需要对其进行配置。
+#### (2) 修改ssh配置信息，config文件，在实际使用中gitlab对外的ssh连接端口不一定为22，若为其他端口号，则需要对其进行配置。
 
 ```bash
 cd /home/sunq/.ssh
@@ -195,6 +197,7 @@ cd /home/sunq/.ssh
 vim config
 
 配置我们的config信息如下:
+# gitee
 Host  gitee.com
 HostName gitee.com
 Port 8177
@@ -214,7 +217,17 @@ IdentitiesOnly yes
 --------------------- 
 原文：https://blog.csdn.net/FU250/article/details/81537463 
 
-## GIT 忽略本地某一文件更改，不提交
+#### (3) 如果添加了SSH公钥仍然无法连接远端服务器，则在config中添加以下信息（可能会与2冲突）
+
+```bash
+# gitee
+Host gitee.com
+HostName gitee.com
+PreferredAuthentications publickey
+IdentityFile ~/.ssh/gitee_id_rsa
+```
+
+## 五、GIT 忽略本地某一文件更改，不提交
 
 比如有一个文件： config.ini 里面有一些本地开发环境参数，不需要提交
 ```
