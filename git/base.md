@@ -226,6 +226,7 @@ HostName gitee.com
 PreferredAuthentications publickey
 IdentityFile ~/.ssh/gitee_id_rsa
 ```
+参考gitee文档：https://gitee.com/help/articles/4229#article-header1
 
 ## 五、GIT 忽略本地某一文件更改，不提交
 
