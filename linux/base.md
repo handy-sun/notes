@@ -16,6 +16,7 @@ lrwxrwxrwx. 1 root root  7 10月 30 17:09 adduser -> useradd
 
 ```sh
 useradd dev #创建用户
+# useradd有可能无法在/home目录下生成相应的目录，此时删除用户，改用adduser
 passwd dev #修改密码
 
 # 更改用户 dev 的密码 。
