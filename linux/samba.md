@@ -22,7 +22,7 @@ home目录下"/home/用户名"这个目录就是我想共享映射的目录，�
 [sunq]
         path = /home/sunq
         available = yes
-        browsealbe = yes
+        browseable = yes
         public = yes
         writable = yes
 ```
