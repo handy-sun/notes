@@ -38,3 +38,18 @@ wsl --unregister DISTRO-NAME
 export DISPLAY=$(grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'):0
 export XDG_SESSION_TYPE=x11
 ```
+
+## 4. WSL2莫名其妙无法联网
+
+管理员方式启动powershell
+
+```powershell
+wsl --shutdown
+netsh winsock reset
+netsh int ip reset all
+netsh winhttp reset proxy
+ipconfig /flushdns
+```
+
+之后重启电脑即可
+
