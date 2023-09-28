@@ -2,22 +2,33 @@
 
 ---
 
-## <font color="#66ccdd" size="4"> 1、用户和用户组。</font>
+## 1. 用户和用户组。</font>
 
-在使用 CentOS 之前用的更多是Ubuntu，所以在 useradd 和 adduser 两条命令出现歧义，在Ubuntu系统上这是两条命令，而在CentOS上则是同一条命令，adduser 是链接的形式存在
+### 1.1 useradd 和 adduser 
+useradd 和 adduser 两条命令，在Ubuntu系统上这是两条命令，
+而在CentOS上则是同一条命令，adduser 是链接的形式存在
 
 ```sh
-# ll /usr/sbin/ | grep 'user'
-lrwxrwxrwx. 1 root root  7 10月 30 17:09 adduser -> useradd
--rwxr-x---. 1 root root 114064 6月 10 09:16 useradd
+LANG=C ls -l /usr/sbin/ | grep -E 'useradd|adduser'
+# ------------------ Ubuntu20.04
+lrwxrwxrwx 1 root root         7 Apr 16  2020 addgroup -> adduser*
+-rwxr-xr-x 1 root root     37785 Apr 16  2020 adduser*
+-rwxr-xr-x 1 root root    147160 Nov 29  2022 useradd*
+# ------------------ other
+lrwxrwxrwx. 1 root root       7  Jun 24  2021 adduser -> useradd
+-rwxr-xr-x. 1 root root   22568  Jun 24  2021 luseradd
+-rwxr-xr-x. 1 root root  142760  Jun 24  2021 useradd
+
 ```
 
-### 1) 添加用户，创建用户完毕后，必须修改密码否则无法登陆
+### 1.2 添加用户
+
+创建用户若没有指定密码，必须修改密码否则无法登陆
 
 ```sh
-useradd dev #创建用户
+useradd dev
 # useradd有可能无法在/home目录下生成相应的目录，此时删除用户，改用adduser
-passwd dev #修改密码
+passwd dev
 
 # 更改用户 dev 的密码 。
 # 新的 密码：
@@ -27,12 +38,14 @@ passwd dev #修改密码
 
 建工作组
 ```sh
-groupadd test             //新建test工作组
+# 新建test工作组
+groupadd test
 ```
 
 新建用户同时增加工作组
 ```sh
-useradd -g test phpq        //新建phpq用户并增加到test工作组
+# 新建phpq用户并增加到test工作组
+useradd -g test phpq
 #注：：-g 所属组 -d 家目录 -s 所用的SHELL
 ```
 
@@ -43,7 +56,14 @@ usermod -G groupname username
 gpasswd -a user group
 ```
 
-### 2) 从组中移除用户和彻底删除用户
+推荐的创建用户命令（新建tester用户并添加到prac工作组）
+<font bold="true" size="5">
+```sh
+useradd -g prac -m tester -d /home/tester -s /bin/bash
+```
+</font>
+
+### 1.3 从组中移除用户和彻底删除用户
 ```sh
 # 从组中移除用户
 gpasswd test -d phpq
@@ -51,7 +71,7 @@ gpasswd test -d phpq
 userdel -r stage
 ```
 
-### 3) 更改属主和同组人
+### 1.4 更改属主和同组人
 
 有时候还需要更改文件的属主和所属的组。只有文件的属主有权更改其他属主和所属的组，用户可以把属于自己的文件转让给大家。改变文件属主用chown命令
 
@@ -65,7 +85,7 @@ chown -R zh888.zh888 files
 chown :gamma mynotes
 ```
 
-### 4) 设置文件的目录和目录生成掩码
+### 1.5 设置文件的目录和目录生成掩码
 
 用户可以使用umask命令设置文件默认的生成掩码。默认的生成掩码告诉系统创建一个文件或目录不应该赋予哪些权限。如果用户将umask命令放在环境文件.bash_profile中，就可以控制所有新建的文件和目录的访问权限。
 
@@ -78,21 +98,28 @@ umask 022
 umask
 ```
 
-补充: 查看用户和用户组的方法
+### 1.6 查看用户和用户组的方法
 
+```sh
+# 用户列表文件
+cat /etc/passwd
+# 用户组列表文件
+cat /etc/group
+# 查看系统中有哪些用户
+cut -d: -f1 /etc/passwd
+# 查看可以登录系统的用户
+grep -E '*sh$' /etc/passwd
+grep -v '/nologin' /etc/passwd | grep -v '/false' | cut -d: -f1
+# 查看某一用户
+w 用户名
+# 查看登录用户
+who
+# 查看用户登录历史记录
+last
+```
 
-用户列表文件：/etc/passwd
+在Linux系统中，将用户的shell设置为`/bin/false`的目的是禁止该用户登录到系统。这通常用于创建系统用户，这些用户不需要交互式登录，例如用于运行特定的服务或任务。
 
-用户组列表文件：/etc/group
+当一个用户的shell被设置为`/bin/false`时，当该用户尝试登录时，系统会立即终止登录会话，因为`/bin/false`是一个命令，它会立即退出并返回非零退出状态码，这将导致登录失败。这可以用来提高系统的安全性，因为禁止不必要的用户登录可以减少潜在的安全风险。
 
-查看系统中有哪些用户：cut -d : -f 1 /etc/passwd
-
-查看可以登录系统的用户：cat /etc/passwd | grep -v /sbin/nologin | cut -d : -f 1
-
-查看某一用户：w 用户名
-
-查看登录用户：who
-
-查看用户登录历史记录：last
-
-
+另一种类似的方法是将shell设置为`/sbin/nologin`（在部分发行版中可能`/usr/bin/nologin`），其效果类似，也会阻止用户交互式登录。这些设置通常用于系统账户或服务账户，以确保这些账户只能用于特定的系统任务而不允许用户登录。
