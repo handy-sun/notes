@@ -73,8 +73,8 @@ yay fcitx-sogoupinyin
 ## 五. <font color="#e06c75" size="4"> 用户sudo不需要输入密码 </font>
 
 ```bash
-# 以普通用户权限执行以下脚本，按提示输入sudo密码
-./nopswd.sh
+# 使用root用户在/etc/sudoers.d下随意创建个文件，代入目标用户名即可
+{YOUR_USER_NAME} ALL=(ALL) NOPASSWD:ALL > /etc/sudoers.d/pass
 ```
 
 ## 六. <font color="#e06c75" size="4"> 解决时间不对的问题(一般表现为快8小时)</font>
