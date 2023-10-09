@@ -1,4 +1,4 @@
-# <font size='5'>1.Linux 常用服务协议的默认端口号</font>
+# <font size='5'>1. Linux 常用服务协议的默认端口号</font>
 
 |服务名|全称|端口号|
 |--|--|--|
@@ -8,15 +8,16 @@
 | SMTP | Simple Mail Transfer Protocol | 25
 | DNS | Domain Name System | 53
 | TFTP | Trivial File Transfer Protocol | 69
-| HTTP | Hypertext Transfer Protocol | 80/8080
+| HTTP | Hypertext Transfer Protocol | 80
 | POP3 | Post Office Protocol 3 | 110
 | IMAP | Internet Message Access Protocol | 143
 | HTTPS | Hypertext Transfer Protocol Secure | 443
 | SMB | Server Message Block | 445
 | RDP | Remote Desktop Protocol | 3389
 | VNC | Virtual Network Console | 5900+n
+| X11 | X Protocol 11 | 6000+n
 
-# <font size='5'>2.Linux 常见服务器程序默认端口号</font>
+# <font size='5'>2. Linux 常见服务器程序默认端口号</font>
 
 |程序名|说明|端口号|
 |--|--|--|
