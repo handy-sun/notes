@@ -56,10 +56,9 @@ git clone 项目地址
 
 本地已经提交一个未推送到远端的commit
 
-### 3.1 使用合并（merge）策略
+### 1. 使用合并（merge）策略
 
-
-- 查看本地分支文件信息，确保没有未提交的更改
+- 查看本地分支文件信息，非必要，但建议确认下没有未提交的更改，否则不允许pull
 ```shell
 git status
 ```
@@ -75,7 +74,7 @@ git pull
 
     ```shell
     git add .
-    git commit -m "fixed conflicts"
+    git commit -m "Merge branch ..."
     ```
 
 - 此时可以推送到远端了
@@ -84,9 +83,7 @@ git pull
 git push
 ```
 
-
 ### 2. 使用变基（rebase）策略
-
 
 ```shell
 git status
@@ -96,7 +93,7 @@ git pull --rebase
 git push
 ```
 
-## 四、创建 ssh
+## 四、创建ssh公钥
 
 ### 1. 在.ssh文件下运行 git Bash，或者输入如下代码跳转到此目录：
 
@@ -109,15 +106,15 @@ cd ~/.ssh
 ### 2. 创建一个ssh key
 
 ```shell
-ssh-keygen -t rsa -C "your_email@example.com"
+ssh-keygen -t rsa
 ```
 
 代码参数含义：
--t  指定密钥类型，默认是 rsa ，可以省略。
+-t 指定密钥类型，默认是 rsa ，可以省略。
 -C 设置注释文字，比如邮箱，可以省略。
--f  指定密钥文件存储文件名。
+-f 指定密钥文件存储文件名，省略了生成过程中也可以输入。
 
- 参数全省略即为：
+参数全省略即为：
 
 ```shell
 ssh-keygen
@@ -128,9 +125,9 @@ ssh-keygen
 > Generating public/private rsa key pair.
 > Enter file in which to save the key (/c/Users/you/.ssh/id_rsa): [Press enter]
 
-当然，你也可以不输入文件名，使用默认文件名（推荐），那么就会生成 id_rsa 和 id_rsa.pub 两个秘钥文件。
-接着又会提示你输入两次密码（该密码是你push文件的时候要输入的密码，而不是github管理者的密码），
-当然，你也可以不输入密码，直接按回车。那么push的时候就不需要输入密码，直接提交到github上了，如：
+当然，可以不输入文件名，使用默认文件名，那么在当前路径下就会生成 id_rsa 和 id_rsa.pub 两个秘钥文件。
+接着又会提示输入两次密码（该密码是你push的时候要输入的密码，而不是github管理者的密码），
+同样，也可以不输入密码，直接按回车。那么push的时候就不需要输入密码，直接提交到git服务器上了，如：
 
 > Enter passphrase (empty for no passphrase): 
 > Enter same passphrase again:
@@ -140,92 +137,22 @@ ssh-keygen
 > Your identification has been saved in /c/Users/you/.ssh/id_rsa.
 > Your public key has been saved in /c/Users/you/.ssh/id_rsa.pub.The key fingerprint is:01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com
 
-当你看到上面这段代码的收，那就说明，你的 SSH key 已经创建成功，你只需要添加到github的SSH key上就可以了。
+当你看到上面这段代码，那就说明，你的 SSH key 已经创建成功，将 SSH key 提交给相应的git服务器就可以用ssh地址进行pull,push了
+你只需要添加到github的SSH key上就可以了。
 
 ### 3. 添加你的ssh key到gitlab或github上面去
 
-(1) 首先你需要拷贝 id_rsa.pub 文件的内容：在.ssh文件下执行命令
+(1) 首先需要拷贝 id_rsa.pub 文件的内容：在.ssh文件下执行命令
 
 ```shell
 cat id_rsa.pub
 ```
 即可显示公钥的内容，按`ctrl+insert`复制密钥内容
 
-(2) 登录你的github账号，从又上角的设置（ Account Settings ）进入，然后点击菜单栏的 SSH key 进入页面添加 SSH key。
+(2) 登录你的github账号，从右上角的设置（ Account Settings ）进入自己的个人设置界面，然后点击菜单栏的 SSH key 进入页面添加 SSH key。
 
-(3) 点击 Add SSH key 按钮添加一个 SSH key 。把你复制的 SSH key 代码粘贴到 key 所对应的输入框中，记得 SSH key 代码的前后不要留有空格或者回车。当然，上面的 Title 所对应的输入框你也可以输入一个该 SSH key 显示在 github 上的一个别名。默认的会使用你的邮件名称。
+(3) 点击 Add SSH key 按钮添加一个 SSH key 。把你复制的 SSH key 代码粘贴到 key 所对应的输入框中，记得 SSH key 代码的前后不要留有空格或者回车。当然，上面的 Title 所对应的输入框你也可以输入一个该 SSH key 显示在 github 上的一个别名。默认的会使用你的邮件名称或用户名@主机名。
 
-以上为ssh key配置简单步骤，参考git添加ssh key步骤。
-
-### 4. 配置ssh
-
-#### (1) 配置git全局配置信息
-
-```bash
-cd /home/sunq
-vim .gitconfig
---------------------
-[user]
-name = sooncheer
-email = handy-sun@foxmail.com
--------------------
-```
-
-可以在该文件中配置user信息，这样一来每个项目中不用再单独(找到项目所在目录下的 .git/文件夹)使用git config user.name 和git config user.email配置用户信息了
-
-可以使用 git config --list 或 git config --edit 该项目中的git配置信息，将会看到我们配置的user信息。
-
-#### (2) 修改ssh配置信息，config文件，在实际使用中gitlab对外的ssh连接端口不一定为22，若为其他端口号，则需要对其进行配置。
-
-```bash
-cd /home/sunq/.ssh
-#该目录下有我们生产的id_rsa和id_rsa.pub
-生成文件config
-vim config
-
-配置我们的config信息如下:
-# gitee
-Host  gitee.com
-HostName gitee.com
-Port 8177
-User sooncheer
-IdentityFile /home/sunq/.ssh/gee
-IdentitiesOnly yes
-```
-
-配置文件参数:
-
-* Host : Host可以看作是一个你要识别的模式，对识别的模式，进行配置对应的的主机名和ssh文件
-* HostName : 要登录主机的主机名
-* User : 登录名
-* Port : ssh连接端口号
-* IdentityFile : 指明上面User对应的identityFile路径
-* IdentitiesOnly : 指定 ssh 只能使用配置文件指定的 identity 和 certificate 文件或通过 ssh 命令行通过身份验证
---------------------- 
-原文：https://blog.csdn.net/FU250/article/details/81537463 
-
-#### (3) 如果添加了SSH公钥仍然无法连接远端服务器，则在config中添加以下信息（可能会与2冲突）
-
-```bash
-# gitee
-Host gitee.com
-HostName gitee.com
-PreferredAuthentications publickey
-IdentityFile ~/.ssh/gitee_id_rsa
-```
-参考gitee文档：https://gitee.com/help/articles/4229#article-header1
-
-## 五、GIT 忽略本地某一文件更改，不提交
-
-比如有一个文件： config.ini 里面有一些本地开发环境参数，不需要提交
-```
-git update-index --assume-unchanged config.ini
-```
-就看不到config.ini 文件了
-
-如果需要提交config.ini文件了，执行：
-```
-git update-index --no-assume-unchanged config.ini
-```
-就可以看到config.ini了，这时就可以提交了
+以上为ssh key配置简单步骤，如果仍然不能使用，参考
+`ssh-remote.md`
 
