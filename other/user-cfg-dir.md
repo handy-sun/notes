@@ -21,6 +21,6 @@ ${HOME}/.local/share
 ## 3. MacOS
 
 ```shell
-'/Users/${USER}/Library/Application Support'
+/Users/${USER}/Library/Application Support
 /Users/${USER}/Library/Preferences
 ```
