@@ -6,7 +6,7 @@
 Get-ChildItem Env:
 ```
 
-这个命令会列出所有环境变量及其对应的值。你可以在 PowerShell 中运行这个命令，它将输出环境变量的详细信息。
+这个命令会列出所有环境变量及其对应的值。可以在 PowerShell 中运行这个命令，它将输出环境变量的详细信息。
 若只想列出特定环境变量的值，可以使用以下命令打印 PATH 环境变量：
 
 ```powershell
@@ -81,22 +81,81 @@ Set-ExecutionPolicy unrestricted
 
 ## 5 Powershell 运行脚本用户权限问题
 
-要在 PowerShell 中以普通权限启动脚本或命令，你可以使用以下方法：
+要在 PowerShell 中以普通权限启动脚本或命令，可以使用以下方法：
 
-1. **使用 `Start-Process` 命令**：你可以使用 `Start-Process` 命令来启动 PowerShell 会话，并指定以普通权限运行。例如：
+1. **使用 `Start-Process` 命令**：可以使用 `Start-Process` 命令来启动 PowerShell 会话，并指定以普通权限运行。例如：
 
-```powershell
-Start-Process powershell.exe -NoProfile -ExecutionPolicy Bypass -NoExit -Verb RunAs
-```
+    ```powershell
+    Start-Process powershell.exe -NoProfile -ExecutionPolicy Bypass -NoExit -Verb RunAs
+    ```
 
    这将以普通权限启动一个新的 PowerShell 会话。
 
-2. **在 PowerShell 中执行命令**：如果你已经在 PowerShell 中，但需要以普通权限执行某个命令，你可以使用 `Start-Process` 命令，如下所示：
+2. **在 PowerShell 中执行命令**：如果已经在 PowerShell 中，但需要以普通权限执行某个命令，可以使用 `Start-Process` 命令，如下所示：
 
-```powershell
-Start-Process -FilePath "cmd.exe" -ArgumentList "/c YourCommandHere" -Verb RunAs
-```
+    ```powershell
+    Start-Process -FilePath "cmd.exe" -ArgumentList "/c YourCommandHere" -Verb RunAs
+    ```
 
-这将以普通权限启动一个新的 CMD 窗口，并在其中运行指定的命令。
+    这将以普通权限启动一个新的 CMD 窗口，并在其中运行指定的命令。
 
-请注意，以普通权限启动 PowerShell 或命令将要求你提供管理员凭据（如果系统设置为需要）。
+## 6 字符串替换
+
+PowerShell 提供了多种用于字符串替换的函数和方法
+
+1. **Replace 方法：** `Replace` 方法用于替换字符串中的指定子字符串。
+
+   ```powershell
+   $originalString = "Hello, world!"
+   $newString = $originalString.Replace("world", "PowerShell")
+   Write-Host $newString
+   ```
+
+   输出:
+
+   ```
+   Hello, PowerShell!
+   ```
+
+2. **-replace 操作符：** PowerShell 支持 `-replace` 操作符，它允许使用正则表达式进行替换。
+
+   ```powershell
+   $originalString = "The quick brown fox jumps over the lazy dog."
+   $newString = $originalString -replace "fox", "cat"
+   Write-Host $newString
+   ```
+
+   输出:
+
+   ```
+   The quick brown cat jumps over the lazy dog.
+   ```
+
+3. **[Regex]::Replace 方法：** 使用 `System.Text.RegularExpressions.Regex` 类的 `Replace` 方法进行更高级的正则表达式替换。
+
+   ```powershell
+   $originalString = "The date is 2023-10-24."
+   $pattern = "\d{4}-\d{2}-\d{2}"
+   $newString = [System.Text.RegularExpressions.Regex]::Replace($originalString, $pattern, "today")
+   Write-Host $newString
+   ```
+
+   输出:
+
+   ```
+   The date is today.
+   ```
+
+4. **-creplace 操作符：** `-creplace` 操作符执行大小写不敏感的正则表达式替换。
+
+   ```powershell
+   $originalString = "PowerShell is powerful."
+   $newString = $originalString -creplace "powershell", "Python"
+   Write-Host $newString
+   ```
+
+   输出:
+
+   ```
+   Python is powerful.
+   ```
