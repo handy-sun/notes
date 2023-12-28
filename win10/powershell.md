@@ -159,3 +159,23 @@ PowerShell 提供了多种用于字符串替换的函数和方法
    ```
    Python is powerful.
    ```
+
+## 7 获取Ip
+
+在PowerShell中，你可以使用`Get-NetIPAddress`命令来获取本机的IPv4地址。
+
+以下是一个示例命令：
+
+```powershell
+Get-NetIPAddress -AddressFamily IPv4 | Select-Object IPAddress
+```
+
+上述命令将返回本机所有的IPv4地址。如果你只想获取`主要的`IPv4地址，可以使用`-AddressFamily IPv4 -PrefixOrigin Manual`参数来过滤出手动配置的IPv4地址。
+
+```powershell
+Get-NetIPAddress -AddressFamily IPv4 -PrefixOrigin Manual | Select-Object IPAddress
+```
+
+执行上述命令后，将会返回本机手动配置的IPv4地址。
+
+希望这个解释对你有帮助！如果你有其他问题，请随时提问。
