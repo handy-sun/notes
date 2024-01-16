@@ -12,7 +12,7 @@ Get-ChildItem Env:
 ```powershell
 $env:PATH
 # 搭配字符串替换使每行显示一个环境变量 (ps中 `n 表示换行符)
-$env:PATH -replace ";" "`n"
+$env:PATH -replace ";", "`n"
 ```
 
 ## 2.刷新环境变量(目前无效，验证方式有问题?)
