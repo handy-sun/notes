@@ -1,7 +1,7 @@
 
 # fstab 各列含义
 
-<file system>	<dir>	<type>	<options>	<dump>	<pass>
+\<file system>	\<dir>	\<type>	\<options>	\<dump>	\<pass>
 
 
 ## type
@@ -10,6 +10,10 @@
 FAT32或FAT16或FAT：填写vfat
 
 NTFS类型可以挂载为ntfs-3g, 其是一个开源的用户空间驱动程序，它允许 Linux 系统通过 FUSE（Filesystem in Userspace）机制来访问和操作 NTFS 文件系统。它提供了对 NTFS 文件系统的完全读写支持，包括文件和目录的创建、修改、删除等操作。
+
+
+更新：
+ntfs-3g 读写效率较低，新内核的已经集成了ntfs3驱动，更高效
 
 ## option
 
@@ -65,15 +69,33 @@ dump 是一个用来做备份的命令， 可以通过 fstab 指定哪个文件�
 - 2 也是要检验。 一般来说，根目录配置为 1 ，其他的要检验的 filesystem 都配置为 2
 
 
-# mount
+# mount 其他文件系统
+
+
+## ntfs
+```bash
+# 挂载 ntfs
+mount -t ntfs3 -o defaults,uid=1000,gid=1000,umask=077,fmask=177,noatime,prealloc /dev/sdb1 /mnt/ntfs
+```
+
+*如果 ntfs 硬盘出现问题导致系统进入 emergency mode 的话，登录root用户注释掉 `/etc/fstab` 中有问题的行，之后再接着执行下方的流程*
 
 ```bash
-# 挂载 ntfs-3g
-mount -t ntfs-3g -o defaults,uid=1000,gid=1000,umask=077,fmask=177,noatime /dev/sdb1 /mnt/ntfs
-# 挂载 windows远程磁盘
-mount -t cifs -o user=winuser,password=123,iocharset=utf8,dir_mode=0777,file_mode=0777,codepage=cp936 //192.168.1.1/windows_dir /webser/mnt/linux_dis
-
+# 退出救援模式
+exit
+# 使用下边命令修复ntfs
+ntfsfix -d /dev/sdb1
+# 取消 /etc/fstab 有问题行的注释 ...
 # 测试 fstab 是否能正确挂载
 mount -a
+```
 
+## cifs
+
+
+```bash
+# 挂载 windows远程磁盘
+mount -t cifs -o user=winuser,password=123,iocharset=utf8, \ 
+dir_mode=0777,file_mode=0777, \
+codepage=cp936 //192.168.1.1/windows_dir /webser/mnt/linux_dis
 ```
