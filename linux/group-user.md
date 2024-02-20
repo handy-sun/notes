@@ -51,9 +51,11 @@ useradd -g test phpq
 
 给已有的用户增加工作组
 ```sh
-usermod -G groupname username
-#或者：(但此用户依然属于之前的组)
+# 或者：(但此用户依然属于之前的组)
 gpasswd -a user group
+
+# 慎用，该用户只在GID=UID的这个组和这个新组里
+usermod -G groupname username
 ```
 
 推荐的创建用户命令（新建tester用户并添加到prac工作组）

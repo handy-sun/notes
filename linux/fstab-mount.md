@@ -73,6 +73,7 @@ dump 是一个用来做备份的命令， 可以通过 fstab 指定哪个文件�
 
 
 ## ntfs
+
 ```bash
 # 挂载 ntfs
 mount -t ntfs3 -o defaults,uid=1000,gid=1000,umask=077,fmask=177,noatime,prealloc /dev/sdb1 /mnt/ntfs
@@ -91,7 +92,6 @@ mount -a
 ```
 
 ## cifs
-
 
 ```bash
 # 挂载 windows远程磁盘
