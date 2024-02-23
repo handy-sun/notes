@@ -55,18 +55,27 @@ sudo apt install python3.10-venv
 cd your/project/dir
 mkdir .env
 python3 -m venv .env
-ls .env
+ll .env
 ```
 
 能看到有这几个目录
 
-bin  include  lib  lib64  pyvenv.cfg
+```bash
+total 16
+drwxr-xr-x 2 qi qi 4096 Feb  1 16:25 bin/
+drwxr-xr-x 3 qi qi 4096 Feb  1 16:25 include/
+drwxr-xr-x 3 qi qi 4096 Feb  1 16:25 lib/
+lrwxrwxrwx 1 qi qi    3 Feb  1 16:25 lib64 -> lib/
+-rw-r--r-- 1 qi qi  175 Feb  1 16:25 pyvenv.cfg
+```
 
 每个虚拟环境项目目录中都会有自己的 Python 和 Pip 副本
 之后可以在虚拟环境中运行 `pip install` 命令
 
 ```bash
-.env/bin/pip install -r requirements.txt
+.env/bin/pip3 install -r requirements.txt
+# 注意：之后执行python命令也要用venv中的python
+.env/bin/python3 main.py
 ```
 
 ## 方案二、 使用pipx
