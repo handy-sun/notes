@@ -76,7 +76,7 @@ dump 是一个用来做备份的命令， 可以通过 fstab 指定哪个文件�
 
 ```bash
 # 挂载 ntfs
-mount -t ntfs3 -o defaults,uid=1000,gid=1000,umask=077,fmask=177,noatime,prealloc /dev/sdb1 /mnt/ntfs
+mount -t ntfs3 -o defaults,uid=1000,gid=1000,umask=027,fmask=137,noatime,prealloc /dev/sdb1 /mnt/ntfs
 ```
 
 *如果 ntfs 硬盘出现问题导致系统进入 emergency mode 的话，登录root用户注释掉 `/etc/fstab` 中有问题的行，之后再接着执行下方的流程*
@@ -94,8 +94,29 @@ mount -a
 ## cifs
 
 ```bash
-# 挂载 windows远程磁盘
-mount -t cifs -o user=winuser,password=123,iocharset=utf8, \ 
-dir_mode=0777,file_mode=0777, \
-codepage=cp936 //192.168.1.1/windows_dir /webser/mnt/linux_dis
+# arch系安装cifs相关的包
+pacman -Ss cifs-utils
+# 挂载 windows共享文件夹到linux目录下，这里以一个中间含有空格的用户名为例，没有空格等特殊符号无需单引号
+# 先不要加 iocharset, codepage 等参数，可能导致挂载失败
+sudo mount -t cifs -o user='q s',password=123,uid=1000,gid=1000,dir_mode=0777,file_mode=0666,forceuid,forcegid //10.144.1.12/shared /mnt/v0d8lfn
+# 可查看挂载日志中详细的参数项
+mount -l | grep cifs
+```
+
+### problem1: 无法浏览文件
+
+如果挂载成功，但是不能浏览目录下的文件（如`ls`命令），提示
+`reading directory '.': Permission denied`
+在windows共享目录的属性中打开 `网络和共享中心` ，选择 `启用共享以便……公用文件夹中的文件`
+
+### problem2: 无法向文件夹拷贝（vers=2.1）
+
+`cannot create regular file ... Permission denied`
+
+添加参数。forceuid 和 forcegid
+
+解决此问题的另一种方法（如果您可以接受安全风险）是使用 CIFS 的 noperm 选项，以允许所有用户读取和写入 CIFS 挂载。
+
+```
+sudo mount -t cifs -o noperm //server-address/folder /mount/path/on/client
 ```
