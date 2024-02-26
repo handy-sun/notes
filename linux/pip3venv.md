@@ -55,18 +55,38 @@ sudo apt install python3.10-venv
 cd your/project/dir
 mkdir .env
 python3 -m venv .env
-ll .env
+# 看下层级结构
+tree -AlFh -L 3 .env
 ```
 
-能看到有这几个目录
+能看到目录和程序，其中，venv中的python指向的就是/usr/bin下的python
 
 ```bash
-total 16
-drwxr-xr-x 2 qi qi 4096 Feb  1 16:25 bin/
-drwxr-xr-x 3 qi qi 4096 Feb  1 16:25 include/
-drwxr-xr-x 3 qi qi 4096 Feb  1 16:25 lib/
-lrwxrwxrwx 1 qi qi    3 Feb  1 16:25 lib64 -> lib/
--rw-r--r-- 1 qi qi  175 Feb  1 16:25 pyvenv.cfg
+[4.0K]  .env/
+├── [4.0K]  bin/
+│   ├── [2.0K]  activate
+│   ├── [ 929]  activate.csh
+│   ├── [2.2K]  activate.fish
+│   ├── [8.8K]  Activate.ps1
+│   ├── [ 420]  aip_client*
+│   ├── [ 253]  chardetect*
+│   ├── [ 247]  futurize*
+│   ├── [ 265]  normalizer*
+│   ├── [ 249]  pasteurize*
+│   ├── [ 253]  pip*
+│   ├── [ 253]  pip3*
+│   ├── [ 253]  pip3.11*
+│   ├── [   7]  python -> python3*
+│   ├── [  16]  python3 -> /usr/bin/python3*
+│   ├── [   7]  python3.11 -> python3*
+│   └── [ 239]  tqdm*
+├── [4.0K]  include/
+│   └── [4.0K]  python3.11/
+├── [4.0K]  lib/
+│   └── [4.0K]  python3.11/
+│       └── [4.0K]  site-packages/
+├── [   3]  lib64 -> lib/  [recursive, not followed]
+└── [ 175]  pyvenv.cfg
 ```
 
 每个虚拟环境项目目录中都会有自己的 Python 和 Pip 副本
@@ -74,12 +94,10 @@ lrwxrwxrwx 1 qi qi    3 Feb  1 16:25 lib64 -> lib/
 
 ```bash
 .env/bin/pip3 install -r requirements.txt
-# 注意：之后执行python命令也要用venv中的python
-.env/bin/python3 main.py
+python3 main.py
 ```
 
 ## 方案二、 使用pipx
-
 
 它会自动为您安装的每个应用程序创建一个新的虚拟环境。不仅。它还在 中创建指向它的链接.local/bin。这样，安装该软件包的用户就可以从命令行中的任何位置运行它。
 
