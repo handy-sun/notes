@@ -33,7 +33,7 @@ Host gitee
 测试是否可以建立ssh连接, 输入命令
 
 ```shell
-ssh -T git@gitee.com
+ssh -Tvv git@gitee.com
 ```
 
 有 `successfully authenticated` 即表示可以建立，其他的内容不用关心

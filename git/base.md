@@ -95,10 +95,20 @@ git push
 
 ## 四、创建ssh公钥
 
-### 1. 在.ssh文件下运行 git Bash，或者输入如下代码跳转到此目录：
+### 0. 附言：密钥类型
+
+目前大部分ssh的server端支持使用 RSA，DSA，ECDSA 和 ED25519 密钥.
+
+- Openssl从2023年中已经不再建议使用 RSA
+- GitLab 在 GitLab 11.0 中已弃用 DSA 密钥.
+- 如 [Go 实用密码术](https://leanpub.com/gocrypto/read#leanpub-auto-ecdsa) 中所述，与 DSA 相关的安全性问题也适用于 ECDSA.
+
+>提示：现有文档表明 ED25519 更安全. 如果使用 RSA 密钥，则美国国家科学技术研究院出版物 800-57 第 3 部分（PDF）建议密钥大小至少为 2048 位.
+
+### 1. 检视ssh目录：
 
 ```shell
-cd ~/.ssh
+test -d ~/.ssh && ls -lh ~/.ssh || mkdir -p ~/.ssh
 ```
 
 可以看到目录下是否存在id_rsa.pub 或 id_dsa.pub 文件，存在说明已经生成过sshkey。但无论是否存在，可以选择使用以前的sshkey或创建sshkey覆盖之前生成的key。
@@ -106,7 +116,7 @@ cd ~/.ssh
 ### 2. 创建一个ssh key
 
 ```shell
-ssh-keygen -t rsa
+ssh-keygen -t ed25519 -C "<comment>"
 ```
 
 代码参数含义：
@@ -114,18 +124,20 @@ ssh-keygen -t rsa
 -C 设置注释文字，比如邮箱，可以省略。
 -f 指定密钥文件存储文件名，省略了生成过程中也可以输入。
 
-参数全省略即为：
+运行上面那条命令后会让你输入一个文件名，用于保存刚才生成的 SSH key 代码，如：
 
-```shell
-ssh-keygen
-```
+> Generating public/private ed25519 key pair.
+> Enter file in which to save the key (/home/you/.ssh/id_ed25519): [Press enter]
 
-以上代码省略了 -f 参数，因此，运行上面那条命令后会让你输入一个文件名，用于保存刚才生成的 SSH key 代码，如：
+当然，可以不输入文件名，使用默认文件名，SSH 密钥存储在用户的主目录中的 `.ssh` 子目录中. 下表包括每种 SSH 密钥算法的默认文件名：
 
-> Generating public/private rsa key pair.
-> Enter file in which to save the key (/c/Users/you/.ssh/id_rsa): [Press enter]
+Algorithm | 公钥 | 私钥
+-- | -- | --
+ED25519（首选） | id_ed25519.pub | id_ed25519
+RSA（至少2048位密钥大小） | id_rsa.pub | id_rsa
+DSA（已弃用） | id_dsa.pub | id_dsa
+ECDSA | id_ecdsa.pub | id_ecdsa
 
-当然，可以不输入文件名，使用默认文件名，那么在当前路径下就会生成 id_rsa 和 id_rsa.pub 两个秘钥文件。
 接着又会提示输入两次密码（该密码是你push的时候要输入的密码，而不是github管理者的密码），
 同样，也可以不输入密码，直接按回车。那么push的时候就不需要输入密码，直接提交到git服务器上了，如：
 
@@ -134,11 +146,34 @@ ssh-keygen
 
 接下来，就会显示如下代码提示，如：
 
-> Your identification has been saved in /c/Users/you/.ssh/id_rsa.
-> Your public key has been saved in /c/Users/you/.ssh/id_rsa.pub.The key fingerprint is:01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com
+> Your identification has been saved in /home/you/.ssh/id_ed25519.
+> Your public key has been saved in /home/you/.ssh/id_ed25519.pub.The key fingerprint is:01:02:03:04:05:06:07:08:aa:aa:aa:aa:aa:aa:aa:aa your_email@example.com
 
 当你看到上面这段代码，那就说明，你的 SSH key 已经创建成功，将 SSH key 提交给相应的git服务器就可以用ssh地址进行pull,push了
 你只需要添加到github的SSH key上就可以了。
+
+#### 附1：RSA SSH keys
+
+您可以使用以下命令创建和配置 RSA 密钥，如果需要，可以使用建议的最小密钥大小`2048`代替：
+```shell
+ssh-keygen -t rsa -b 2048 -C "email@example.com"
+```
+
+#### 附2：RSA keys and OpenSSH from versions 6.5 to 7.8
+在 OpenSSH 7.8 之前，RSA 密钥的默认公共密钥指纹基于 MD5，因此不安全.
+
+查看版本
+```shell
+ssh -V
+```
+
+如果 OpenSSH 版本介于 6.5 至 7.8（含）之间，请使用`-o`选项运行ssh-keygen，以更安全的 OpenSSH 格式保存私人 SSH 密钥.
+
+如果已经具有可用于 GitLab 的 RSA SSH 密钥对，请考虑对其进行升级以使用更安全的密码加密格式. 可以使用以下命令进行操作：
+
+```shell
+ssh-keygen -o -t rsa -b 4096 -C "email@example.com"
+```
 
 ### 3. 添加你的ssh key到gitlab或github上面去
 
