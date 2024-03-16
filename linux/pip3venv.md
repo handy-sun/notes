@@ -1,6 +1,6 @@
 ## 现象
 
-在Ubuntu 23.04、Fedora、Manjaro 等最新的linux发行版中运行
+在Ubuntu 23.04、Fedora、Arch、Manjaro 等较新的linux发行版中运行
 `pip install` 命令时，通常会收到一个错误提示（以Manjaro的为例）：
 
 
@@ -53,16 +53,15 @@ sudo apt install python3.10-venv
 
 ```bash
 cd your/project/dir
-mkdir .env
-python3 -m venv .env
+python3 -m venv .venv
 # 看下层级结构
-tree -AlFh -L 3 .env
+tree -AlFh -L 3 .venv
 ```
 
 能看到目录和程序，其中，venv中的python指向的就是/usr/bin下的python
 
 ```bash
-[4.0K]  .env/
+[4.0K]  .venv/
 ├── [4.0K]  bin/
 │   ├── [2.0K]  activate
 │   ├── [ 929]  activate.csh
@@ -93,19 +92,27 @@ tree -AlFh -L 3 .env
 之后可以在虚拟环境中运行 `pip install` 命令
 
 ```bash
-.env/bin/pip3 install -r requirements.txt
+## 激活虚拟环境
+source .venv/bin/activate
+## 如果上边的文件不存在试试下边的
+# source .venv/Scripts/activate
+## 注意此时是优先使用.venv/bin/pip
+pip install -r requirements.txt
+## 仍然是使用虚拟环境中的python
 python3 main.py
 ```
 
 ## 方案二、 使用pipx
 
-它会自动为您安装的每个应用程序创建一个新的虚拟环境。不仅。它还在 中创建指向它的链接.local/bin。这样，安装该软件包的用户就可以从命令行中的任何位置运行它。
+它会自动为您安装的每个应用程序创建一个新的虚拟环境。它还创建指向它的链接.local/bin。这样，安装该软件包的用户就可以从命令行中的任何位置运行它。
 
 ```bash
 sudo apt install pipx
+## arch系
+# sudo pacman -S python-pipx
 pipx ensurepath
-# 必须关闭终端并重新登录才能发生更改。
-# for example:
+## 必须关闭终端并重新登录才能发生更改。
+## for example:
 pipx install package_name
 pipx uninstall package_name
 ```
