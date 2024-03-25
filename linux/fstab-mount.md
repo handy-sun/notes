@@ -1,10 +1,11 @@
 
-# fstab 各列含义
+# 1. fstab 各列含义
 
 \<file system>	\<dir>	\<type>	\<options>	\<dump>	\<pass>
 
+前两项比较易懂，不再详解
 
-## type
+## 1.1 type
 
 
 FAT32或FAT16或FAT：填写vfat
@@ -15,7 +16,7 @@ NTFS类型可以挂载为ntfs-3g, 其是一个开源的用户空间驱动程序�
 更新：
 ntfs-3g 读写效率较低，新内核的已经集成了ntfs3驱动，更高效
 
-## option
+## 1.2 option
 
 挂载时使用的参数，注意有些mount 参数是特定文件系统才有的。一些比较常用的参数有：
 
@@ -45,7 +46,7 @@ ntfs-3g 读写效率较低，新内核的已经集成了ntfs3驱动，更高效
 - auto和 noauto： 这是控制设备是否自动挂载的选项。auto是默认选择的选项，这样，设备会在启动或者你使用mount -a命令时按照fstab的内容自动挂载。如果你不希望这样，就使用noauto选项，如果这样的话，你就只能明确地通过手工来挂载设备。
 
 
-## dump
+## 1.3 dump
 
 通常是第1个数字，表示 dump备份的设置
 
@@ -57,7 +58,7 @@ dump 是一个用来做备份的命令， 可以通过 fstab 指定哪个文件�
 
 通常这个数值不是 0 就是 1。
 
-## pass
+## 1.4 pass
 
 通常是第2个数字，表示 fsck 检验扇区的设置
 
@@ -69,10 +70,10 @@ dump 是一个用来做备份的命令， 可以通过 fstab 指定哪个文件�
 - 2 也是要检验。 一般来说，根目录配置为 1 ，其他的要检验的 filesystem 都配置为 2
 
 
-# mount 其他文件系统
+# 2. mount 其他文件系统
 
 
-## ntfs
+## 2.1 ntfs
 
 ```bash
 # 挂载 ntfs, 文件夹权限 750, 文件权限  640
@@ -92,7 +93,35 @@ systemctl daemon-reload
 mount -a
 ```
 
-## cifs
+### 2.1.1 systemd与fstab结合 
+
+
+如果每次都是因为系统假死而导致的重新开机那么上边的流程又要再走一遍，非常的繁琐
+，并且无人值守情况下就会因为卡fstab加载而无法正确进入系统。
+
+这时我们可以依靠 `systemd` 对 `/etc/fstab` 中的挂载选项的额外补充进行进一步优化
+
+在之前的挂载选项中后边继续添加以下内容
+
+```bash
+noauto,nofail,x-systemd.automount,x-systemd.idle-timeout=0,x-systemd.device-timeout=10s
+```
+
+- auto、noauto
+  - auto 表示开机自动挂载，
+  - noauto 表示开机不自动挂载(且mount -a也不自动挂载该挂载项)，但如果本挂载项被其它Unit依赖，则noauto时仍然会被挂载
+- nofail：开机时，不在乎也不等待本挂载项，即使本挂载项在开机时挂载失败也无所谓
+- x-systemd.automount 表示在第一次对该文件系统进行访问时自动挂载
+- x-systemd.idle-timeout=xx 这表示systemd如果发现该设备xx秒时间内都处于idle状态，将自动卸载它。默认单位为秒，支持的单位有s, min, h, ms，设置为0表示永不超时
+- x-systemd.device-timeout=yy 表示systemd最多等待该设备在yy秒内挂载成功
+
+至此，我们可以写一个完整的挂载选项在fstab中了
+
+```shell
+UUID=XXXXXX  /mnt/ntfs  ntfs3  defaults,uid=1000,gid=1000,umask=007,fmask=117,noatime,prealloc,noauto,nofail,x-systemd.automount,x-systemd.idle-timeout=0,x-systemd.device-timeout=10s  0  0
+```
+
+## 2.2 cifs
 
 ```bash
 # arch系安装cifs相关的包
@@ -104,13 +133,14 @@ sudo mount -t cifs -o user='q s',password=123,uid=1000,gid=1000,dir_mode=0777,fi
 mount -l | grep cifs
 ```
 
-### problem1: 无法浏览文件
+### 2.2.1 problem1: 无法浏览文件
 
 如果挂载成功，但是不能浏览目录下的文件（如`ls`命令），提示
 `reading directory '.': Permission denied`
+
 在windows共享目录的属性中打开 `网络和共享中心` ，选择 `启用共享以便……公用文件夹中的文件`
 
-### problem2: 无法向文件夹拷贝（vers=2.1）
+### 2.2.2 problem2: 无法向文件夹拷贝（vers=2.1）
 
 `cannot create regular file ... Permission denied`
 
