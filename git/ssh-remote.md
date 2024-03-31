@@ -40,4 +40,13 @@ ssh -Tvv git@gitee.com
 
 ---
 
+查看私钥信息 SHA256码
+
+```shell
+ssh-keygen -l -f ~/.ssh/id_rsa 
+```
+
+如果显示的和git后台的ssh密钥的提示一致就对了
+
+
 参考gitee文档：https://gitee.com/help/articles/4229#article-header1
