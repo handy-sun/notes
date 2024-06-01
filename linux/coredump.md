@@ -40,8 +40,10 @@ sysctl -w kernel.core_pattern=core_%e_%p_%s_%t
 # 可以将core文件统一生成到/var/crash目录下
 sysctl -w "kernel.core_pattern=/var/crash/core_%e_%p_%s_%t" >> /etc/sysctl.conf
 sysctl -w "kernel.core_uses_pid=1" >> /etc/sysctl.conf
-# 查看生效参数；一定要验证设置，因为可能和你设置的不完全一致
-sysctl -p 
+# 查看/etc/sysctl.conf中生效参数；一定要验证设置，因为可能和你设置的不完全一致
+sysctl -p
+## 如果文件中没有，使用以下命令读取值
+sysctl -n kernel.core_pattern
 # 快速验证是否能生成core文件（如果此时在某种shell环境会退出到其外部环境）
 kill -s SIGSEGV $$
 ```
