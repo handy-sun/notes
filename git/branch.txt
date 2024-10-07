@@ -16,8 +16,3 @@ git pull origin tdhtest
 
 git checkout tdhtest
 
-
-二. 分支pull/push/merge
-
-在 tdhtest 分支上
-git merge x12-r1.0-ch
