@@ -1,18 +1,27 @@
-一. 初次使用流程
+## 一. 初次使用流程
 
-1.使用以下命令同步远端的分支到本地
+### 1.使用以下命令同步远端的分支到本地
 
 git remote update origin --p
 
-2.查看所有分支是否包含所要找的远端分支: remote/origin/tdhtest
+### 2.查看所有分支是否包含所要找的远端分支: remote/origin/tdhtest
 
 git branch -a
 
-3.拉取远端分支到本地
+### 3.拉取远端分支到本地
 
 git pull origin tdhtest
 
-4.切换分支，注意：切换前记得commit或stash，防止没有add的代码丢失
+### 4.切换分支，注意：切换前记得commit或stash，防止没有add的代码丢失
 
 git checkout tdhtest
 
+## 标签相关
+
+### 删除本地tag
+
+git tag -d tag-name
+
+### 删除远程tag
+
+git push origin :refs/tags/tag-name
