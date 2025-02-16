@@ -18,7 +18,7 @@ pacman -Q package 查看本地是否安装了package包(package为完整包名)
 pacman -Qi package 列出package包的详情信息(名字 描述 官网 以来 架构等)
 pacman -Si package 从数据库中查询package包的详细信息
 pacman -Ql package 列出package包的文件(列出的是文件路径)
-pacman -Qe >> list.txt # 导出系统中所有手动指定安装的包
+pacman -Qeq >> list.txt # 导出系统中所有手动指定安装的包
 pacman -Qo xxd # 查询某个程序属于哪个包
 
 ```
