@@ -110,8 +110,9 @@ cat /etc/group
 # 查看系统中有哪些用户
 cut -d: -f1 /etc/passwd
 # 查看可以登录系统的用户
-grep -E '*sh$' /etc/passwd
-grep -v '/nologin' /etc/passwd | grep -v '/false' | cut -d: -f1
+grep -E '(.+)sh$' /etc/passwd
+
+grep -Ev '/nologin$|/false$' /etc/passwd | cut -d: -f1
 # 查看可以登录系统并设置密码的用户(/etc/shadow文件需要root权限)
 sudo grep -v '!\*' /etc/shadow | cut -d: -f1
 # 查看某一用户

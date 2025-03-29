@@ -9,7 +9,7 @@
     /vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 
-假设有变量 var=http://www.aaa.com/123.htm.
+假设有变量 `var=http://www.aaa.com/123.htm`
 
 ## 1. <font color="#66ccdd" size="4"> # 号截取，删除左边字符，保留右边字符。</font>
 
