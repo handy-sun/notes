@@ -128,3 +128,54 @@ last
 当一个用户的shell被设置为`/bin/false`时，当该用户尝试登录时，系统会立即终止登录会话，因为`/bin/false`是一个命令，它会立即退出并返回非零退出状态码，这将导致登录失败。这可以用来提高系统的安全性，因为禁止不必要的用户登录可以减少潜在的安全风险。
 
 另一种类似的方法是将shell设置为`/sbin/nologin`（在部分发行版中可能`/usr/bin/nologin`），其效果类似，也会阻止用户交互式登录。这些设置通常用于系统账户或服务账户，以确保这些账户只能用于特定的系统任务而不允许用户登录。
+
+## 2. Alpine Linux下创建用户和组
+
+在Alpine Linux下创建用户和组命令分别是adduser和addgroup(**默认是不含useradd命令**)，本文主要介绍这两个命令相关参数及使用。
+
+### 2.1 adduser
+
+```sh
+adduser [OPTIONS] USER [GROUP]
+```
+
+adduser创建新用户或将用户添加到组
+
+-h DIR：创建用户时指定用户家目录位置，默认/home/NAME
+
+-g GECOS：用户备注信息，即/etc/passwd第五个字段
+
+-s SHELL：指定用户所使用的shell，默认/bin/ash
+
+-G GRP：指定用户所属的组
+
+-S：创建系统用户（UID号100~999），创建系统用户时不自动创建组，默认情况下创建用户时会同时创建一个与账号同名的组
+
+-D：创建用户时不创建密码
+
+-H：创建用户时不创建用户家目录
+
+-u UID：指定用户UID
+
+-k SKEL：指定骨骼框架目录位置，默认/etc/skel，其实就是用来放置新用户配置文件的，添加一个新用户时，会将该框架目录中的文件复制到新用户的家目录下。
+
+例：创建骨骼框架目录为/etc/skel/，在/etc/skel/目录下touch一个123.txt，创建新用户whsir并指定/etc/skel/，创建后可发现，在whsir用户的家目录下存在123.txt文件了，这个文件就是我们刚才touch的文件。
+
+```sh
+mkdir /etc/skel/
+touch /etc/skel/123.txt
+adduser whsir -k /etc/skel/
+ls /home/whsir/123.txt
+```
+
+### 2.2 addgroup
+
+```sh
+addgroup [-g GID] [-S] [USER] GROUP
+```
+
+addgroup一般情况下创建用户的同时会创建组，包括其ID号，在实际使用中addgroup使用较少。
+
+-g GID：用户组GID
+
+-S：创建系统组（GID100~999）
