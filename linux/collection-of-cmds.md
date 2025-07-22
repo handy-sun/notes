@@ -502,11 +502,11 @@ less命令的用法与more命令类似，也可以用来浏览超过一页的文
 ### 3、查看硬件信息
 
 ```sh
-Ispci：查看PCI设备 -v：查看详细信息
+lspci：查看PCI设备 -v：查看详细信息
 
-Isusb：查看USB设备 -v：查看详细信息
+lsusb：查看USB设备 -v：查看详细信息
 
-Ismod：查看加载的模块(驱动)
+lsmod：查看加载的模块(驱动)
 ```
 
 ### 4、归档、压缩
@@ -546,7 +546,7 @@ tar -tf test.tar ：查看test.tar文件中包括了哪些文件
 
 tar -xvf test.tar 将test.tar解开
 
-tar -zxvf foo.tar.gz 解压缩
+tar -zxvf foo.tar.gz 解压缩gz
 
 gzip各gunzip命令
 
