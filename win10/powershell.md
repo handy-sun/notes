@@ -178,4 +178,28 @@ Get-NetIPAddress -AddressFamily IPv4 -PrefixOrigin Manual | Select-Object IPAddr
 
 执行上述命令后，将会返回本机手动配置的IPv4地址。
 
-希望这个解释对你有帮助！如果你有其他问题，请随时提问。
+## 8 获取进程信息
+
+获取nssm进程的信息
+
+```powershell
+Get-Process -Name nssm
+```
+
+获取nssm进程的启动时间
+
+```powershell
+Get-Process -Name nssm | Format-Table -Property StartTime
+```
+
+获取nssm进程的版本信息
+
+```powershell
+Get-Process -Name nssm -FileVersionInfo
+```
+
+获取nssm进程的以下几个属性并格式化显示
+
+```powershell
+Get-Process -Name nssm | Format-Table -Property Id, ProcessName, WS, CPU -AutoSize
+```
