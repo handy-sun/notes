@@ -36,7 +36,7 @@ sudo nixos-rebuild switch --flake '.#your-hostname'
 ```
 
 
-注：`.` 表示当前路径，`#` 后接输出名称。
+注：`.` 表示当前路径，`#` 后接输出名称。**如果是zsh的话，注意包含#的块要加单引号**
 
 **PS: 如果更改hostname成功了最好重启机器使新的hostname生效, 这样之后rebuild就不用加--flake指定额外的hostname参数了**
 
@@ -79,7 +79,7 @@ sudo nixos-rebuild switch --flake '.#your-hostname'
 
 ```
 
-### 其他常用命令
+### 常用命令
 
 构建类`nixos-rebuild`
 
@@ -104,11 +104,12 @@ nixos-rebuild switch -p test
 nix-store -q --references /run/current-system/sw | sed 's|.*/||; s/-[0-9].*//' | sort -u
 
 # 查看已安装的包（去重 + 去版本号后缀以及 - 之前的digest（哈希值））
-nix-store -q --references /run/current-system/sw | sed 's|.*/||; s/-[0-9].*//' | sort -u | cut -d- -f2-
+nix-store -q --references /run/current-system/sw | sed 's|.*/||; s/-[0-9].*//' | cut -d- -f2- | sort -u | uniq
 
 # 查看构建过的系统历史
 nix profile history --profile /nix/var/nix/profiles/system
 
+# 删除两天前的构建历史
 sudo nix profile wipe-history --older-than 2d --profile /nix/var/nix/profiles/system
 
 # 垃圾回收: 递归遍历 /nix/var/nix/gcroots/ 目录下的所有软链接，找出所有被引用的软件包，然后将不再被引用的软件包删除
@@ -116,4 +117,17 @@ nix-store --gc
 
 # 进一步回收空间： 删除掉所有旧的 profiles，再执行 nix-store --gc 命令清理掉不再被引用的软件包
 nix-collect-garbage --delete-old
+```
+
+### 其他
+
+```sh
+# 查询系统的环境
+nix-info -m
+# 查询 nix 的环境
+nix config show
+# nix-tree
+nix-store --gc --print-roots | rg -v '/proc/' | rg -Po '(?<= -> ).*' | xargs -o nix-tree
+# 为什么某个包被安装了
+nix why-depends /run/current-system 'nixpkgs#python3'
 ```

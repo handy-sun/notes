@@ -104,3 +104,17 @@ git submodule add new_url path_to_submodule
 
 这次可以看到开始拉新的子模块的库了
 
+# 5. 仅仅移除子模块
+
+
+```shell
+git submodule deinit dir/submodule
+```
+
+然后移除子模块的路径和.gitmodules
+
+```shell
+git rm -rf dur/submodule
+git rm -rf .gitmodules
+```
+
