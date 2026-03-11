@@ -123,6 +123,25 @@ who
 last
 ```
 
+### 1.7 更改已有的用户及其组的id(UID,GID)
+
+进入root用户下，将foo:foo的uid,gid都改为1000
+
+```sh
+usermod -u 1000 foo
+groupmod -g 1000 foo
+
+```
+
+找到所有旧 UID 拥有的文件，并将它们更改为新的 UID
+
+```sh
+find / -group 1000 -exec chgrp -h foo {} \;
+find / -user 1000 -exec chown -h foo {} \;
+```
+
+### 1.8 其他
+
 在Linux系统中，将用户的shell设置为`/bin/false`的目的是禁止该用户登录到系统。这通常用于创建系统用户，这些用户不需要交互式登录，例如用于运行特定的服务或任务。
 
 当一个用户的shell被设置为`/bin/false`时，当该用户尝试登录时，系统会立即终止登录会话，因为`/bin/false`是一个命令，它会立即退出并返回非零退出状态码，这将导致登录失败。这可以用来提高系统的安全性，因为禁止不必要的用户登录可以减少潜在的安全风险。

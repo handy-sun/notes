@@ -40,64 +40,46 @@ sudo nixos-rebuild switch --flake '.#your-hostname'
 
 **PS: 如果更改hostname成功了最好重启机器使新的hostname生效, 这样之后rebuild就不用加--flake指定额外的hostname参数了**
 
-### zsh配置
 
-在 `/etc/nixos/configuration.nix` 中
+测试配置能否通过构建（但是并不切换到该配置）, 当前目录生成个result软链接指向构建结果
+`nixos-rebuild build`
+基本等价于
+`nix build --extra-experimental-features 'nix-command flakes' --print-out-paths '/etc/nixos#nixosConfigurations."hostname".config.system.build.nixos-rebuild' --no-link`
 
-```nix
-{
-  programs.zsh.enable = true;
-  users.users.<myusername> = {
-    shell = pkgs.zsh;
-  };
-}
-```
+**如果装了nh,可以替换**
 
-`home.nix`
-
-方案1: 配置写在nix中
-
-```nix
-{
-  programs.zsh = {
-    enable = true;
-    ...
-  };
-}
-
-```
-
-方案2: 修改 `~/.zshrc` 内容,使用自己的配置
+| Platform     | Old Command (Without NH)                 | New Command (With NH)          |
+| ------------ | ---------------------------------------- | ------------------------------ |
+| NixOS        | `nixos-rebuild switch --flake .#myHost`  | `nh os switch . -H myHost`     |
+| Darwin       | `darwin-rebuild switch --flake .#myHost` | `nh darwin switch . -H myHost` |
+| Home Manager | `home-manager switch --flake .#myHost`   | `nh home switch . -c myHome`   |
 
 
-```nix
-{
-  home.file.".zshrc".text = ''
-    source $HOME/.config/dotzsh/zshrc
-  '';
-}
+**注意！**
 
+**nh home switch . ** 一定要有这个点(或路径)， 不输入路径不会生效，但命令不会报错！
+
+#### 其他`nixos-rebuild`(针对非root用户)
+
+```sh
+# 修改完配置后，使配置生效，但是不将它设置为默认启动项
+sudo nixos-rebuild test
+
+# 修改完配置后，将它设置为默认启动项,（但是要下次启动才生效，不立即生效）
+sudo nixos-rebuild boot
+
+# 使配置立即生效并将修改完的配置加入到 grub 选项并命名为 test.
+sudo nixos-rebuild switch -p test
 ```
 
 ### 常用命令
 
-构建类`nixos-rebuild`
+新系统没开启实验性功能和flake的话，
+加上这个参数来临时启用
+`--extra-experimental-features "nix-command flakes"`
 
-```sh
-# 测试配置能否通过构建（但是并不切换到该配置）,当前目录生成个result软链接指向构建结果
-nixos-rebuild build
 
-# 修改完配置后，使配置生效，但是不将它设置为默认启动项
-nixos-rebuild test
-
-# 修改完配置后，将它设置为默认启动项,（但是要下次启动才生效，不立即生效）
-nixos-rebuild boot
-
-# 使配置立即生效并将修改完的配置加入到 grub 选项并命名为 test.
-nixos-rebuild switch -p test
-```
-
-查看和清除
+#### 查看和清除
 
 ```sh
 # 查看已安装的包（去重 + 去版本号后缀）
@@ -120,6 +102,19 @@ nix-collect-garbage --delete-old
 ```
 
 ### 其他
+
+```sh
+## Nix 包管理器中用于验证并修复 Nix Store（存储）完整性的命令
+sudo nix-store --repair --verify --check-contents
+```
+
+| 参数 | 作用 |
+| ---------------- | --------------------------------------------------------------------------- |
+| --verify         | 扫描 /nix/store 中所有路径，检查：<br>• 文件是否存在<br>• 文件权限/所有权是否正确<br>• 文件哈希是否匹配 Nix 元数据 |
+| --check-contents | 深度验证：逐字节比对文件内容与 Nix 记录的哈希值（而不仅仅是检查文件大小/时间戳） |
+| --repair         | 如果发现损坏的文件，自动从二进制缓存（如 cache.nixos.org）重新下载修复 |
+
+
 
 ```sh
 # 查询系统的环境
