@@ -56,6 +56,12 @@ gpasswd -a user group
 
 # 慎用，该用户只在GID=UID的这个组和这个新组里
 usermod -G groupname username
+
+## 将用户添加至docker组
+sudo usermod -aG docker <USER>
+## 可能刷新组成员：
+newgrp docker
+#或重新登录。 
 ```
 
 推荐的创建用户命令（新建tester用户并添加到prac工作组）
