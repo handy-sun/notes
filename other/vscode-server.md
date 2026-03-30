@@ -1,6 +1,6 @@
 
 
-# 记录一下远程server安装出错 只能手动下载的情况
+## 记录一下远程server安装出错 只能手动下载的情况
 
 先到远端的服务器内，在~/.vscode-server 记住Commit ID
 
@@ -21,5 +21,9 @@ unzip vscode-server-darwin-arm64.zip
 mv vscode-server-darwin-arm64 ~/.vscode-server/cli/server/Stable-${commit_id}
 ```
 
-重启vscode后 再重新远程连接
+## 后续:重启vscode后 再重新远程连接依然还会失败?
 
+后来发现其实是 `Remote-SSH` 插件在MacOS下用的bsdtar解压命令(hardcode)，插件开发者未考虑用户环境变量中的tar实际为gnutar,
+如果用了gnutar,则会解压失败,后续一系列的安装步骤就都失败了
+
+先把 `Remote-SSH` 插件禁用更新再说。。。

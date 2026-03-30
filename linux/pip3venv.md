@@ -102,6 +102,16 @@ pip install -r requirements.txt
 python3 main.py
 ```
 
+### 注意事项
+
+venv 会隔离系统包，有时候不方便（比如 pygobject、pyqt 之类的），这种情况下可以用
+
+```shell
+python3 -m venv --system-site-packages
+```
+
+来创建 venv，这样创建的 venv 不会隔离系统包，而是用 venv 内的包覆盖外部的包，就像 `pip install --user` 的包一样，但它不会干扰系统包的行为，只影响 venv 之内的 python
+
 ## 方案二、 使用pipx
 
 它会自动为您安装的每个应用程序创建一个新的虚拟环境。它还创建指向它的链接.local/bin。这样，安装该软件包的用户就可以从命令行中的任何位置运行它。
