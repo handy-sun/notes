@@ -94,6 +94,9 @@ nix profile history --profile /nix/var/nix/profiles/system
 # 删除两天前的构建历史
 sudo nix profile wipe-history --older-than 2d --profile /nix/var/nix/profiles/system
 
+# 回退到某个版本
+sudo nix profile rollback --profile  /nix/var/nix/profiles/system --to 50
+
 # 垃圾回收: 递归遍历 /nix/var/nix/gcroots/ 目录下的所有软链接，找出所有被引用的软件包，然后将不再被引用的软件包删除
 nix-store --gc
 
