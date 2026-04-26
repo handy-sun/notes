@@ -53,3 +53,69 @@ ipconfig /flushdns
 
 之后重启电脑即可
 
+## 5. WSL2虚拟磁盘空间回收
+
+WSL2 的虚拟磁盘（ext4.vhdx）会自动扩容但不会自动缩容，删除文件后需手动压缩回收空间。
+
+### 5.1 WSL 内部清理
+
+```bash
+# 清理包缓存
+sudo apt autoremove && sudo apt clean
+
+# 删除临时文件和日志
+sudo rm -rf /tmp/*
+sudo rm -rf /var/log/*
+
+# 检查缓存占用
+du -sh ~/.cache
+```
+
+### 5.2 查找 VHDX 文件位置
+
+默认路径：`%LOCALAPPDATA%\Packages\<发行版名称>\LocalState\ext4.vhdx`
+
+在资源管理器中打开 `%LOCALAPPDATA%\Packages`，找类似 `CanonicalGroupLimited.Ubuntu...` 的文件夹。
+
+### 5.3 diskpart 压缩（核心步骤）
+
+管理员 PowerShell：
+
+```powershell
+# 关闭所有 WSL 实例
+wsl --shutdown
+
+# 启动 diskpart
+diskpart
+```
+
+在 diskpart 中执行（替换为实际路径）：
+
+```
+select vdisk file="C:\Users\<用户名>\AppData\Local\Packages\<发行版>\LocalState\ext4.vhdx"
+attach vdisk readonly
+compact vdisk
+detach vdisk
+exit
+```
+
+### 5.4 Hyper-V 方式（Windows 11 Pro）
+
+需启用 Hyper-V，先 `wsl --shutdown`，然后：
+
+```powershell
+Optimize-VHD -Path "VHDX文件路径" -Mode Full
+```
+
+### 5.5 Docker Desktop 用户
+
+Docker 数据通常位于单独的 `data/ext4.vhdx` 中（在 `DockerDesktopResources` 相关目录下）。
+
+压缩前清理 Docker 垃圾：
+
+```powershell
+docker system prune -a --volumes
+```
+
+然后对 Docker 的 VHDX 文件执行相同的 diskpart 压缩流程。
+
