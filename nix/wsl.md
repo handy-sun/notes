@@ -76,7 +76,7 @@ wsl --install --from-file nixos.wsl --name nixos --no-launch
 查看当前channel
 
 ```shell
-sudo nix-channel  --list
+sudo nix-channel --list
 ```
 
 ```

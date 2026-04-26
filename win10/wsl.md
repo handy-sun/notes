@@ -119,3 +119,39 @@ docker system prune -a --volumes
 
 然后对 Docker 的 VHDX 文件执行相同的 diskpart 压缩流程。
 
+
+## 6. 最新线上安装方式
+
+查看所有线上预装的子系统
+
+```powershell
+wsl --list --online
+```
+
+开始安装
+
+```powershell
+wsl --install Ubuntu --location C:\wsl\ubuntu --name ubuntu --no-launch
+```
+
+- --location：表示安装到的位置，这里安装到了 D:\wsl\ubuntu 这个位置
+- --name：Linux 发行版的名称
+- --no-launch: 安装好不立即启动
+
+安装后有个警告
+
+```
+wsl: 由于潜在的数据损坏，目前已禁用稀疏 VHD 支持。=========]
+
+要强制发行版使用稀疏 VHD，请运行:
+
+wsl.exe --manage <DistributionName> --set-sparse true --allow-unsafe
+```
+
+不开启稀疏 VHD 完全可以正常用 WSL，唯一区别是 .vhdx 文件占磁盘空间更大，而且删除文件后不会自动缩小。
+**⚠️强制开启风险：在异常断电或磁盘满的情况下可能损坏 WSL 数据，正常使用一般没问题。**
+
+```powershell
+wsl --manage ubuntu --set-sparse true --allow-unsafe
+```
+
