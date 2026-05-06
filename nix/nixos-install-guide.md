@@ -19,7 +19,7 @@
 4. 出现系统选择界面 → 选 **lts 内核**
 5. 如卡住按 Esc 切换详细日志，或在启动提示符输入 `nixos nomodeset`
 
-## 3. 连接无线网络
+## 3. 连接无线网络并更改channel为镜像源
 
 ```bash
 # 启动 wpa_supplicant
@@ -28,15 +28,26 @@ systemctl start wpa_supplicant
 # 交互式连接 WiFi
 wpa_cli
 > add_network
-> 0
+0
 > set_network 0 ssid "你的WiFi名"
 > set_network 0 psk "密码"
 > enable_network 0
 > quit
 
 # 确认拿到 IP
-ip addr show
-ping -c 3 baidu.com
+ip -4 a l
+ping baidu.com
+ping 223.5.5.5
+
+```
+
+使用以下命令将两个频道（系统频道和软件仓库频道）替换到最新的(nixos-unstable) channel 的国内镜像
+
+```bash
+sudo -i
+nix-channel --add https://mirrors.ustc.edu.cn/nix-channels/nixos-unstable nixos
+nix-channel --update
+
 ```
 
 ## 4. 分区（GPT + ESP + btrfs）
@@ -238,7 +249,7 @@ nixos-install
 nixos-enter
 
 # 创建用户
-useradd -m -G wheel -s /bin/bash yourname
+useradd yourname -m -G wheel
 passwd yourname
 
 # 确认 sudo 可用
