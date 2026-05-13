@@ -37,6 +37,37 @@ git branch -D branch_name
 git push origin --delete branch_name
 ```
 
+### 7. 清理本地已失效的远程跟踪分支
+
+远程仓库里的分支删除后，本地的 `origin/xxx` 远程跟踪分支不一定会自动消失。
+如果 `git branch -a` 里还能看到很多远端已经删掉的分支，可以用 prune 清理。
+
+预览会删除哪些远程跟踪分支，不实际删除：
+
+```sh
+git remote prune origin --dry-run
+```
+
+实际清理 `origin` 下已失效的远程跟踪分支：
+
+```sh
+git remote prune origin
+```
+
+或者在拉取远端信息时顺手清理：
+
+```sh
+git fetch --prune
+```
+
+以后每次 `git fetch` 自动清理：
+
+```sh
+git config --global fetch.prune true
+```
+
+注意：这些命令删除的是本地的 `origin/xxx` 远程跟踪引用，不会删除本地自己的分支，也不会删除远程仓库里的分支。
+
 ## 二、标签
 
 ### 删除本地tag
