@@ -66,7 +66,7 @@ sudo nixos-rebuild switch --flake '.#your-hostname'
 sudo nixos-rebuild test
 
 # 修改完配置后，将它设置为默认启动项,（但是要下次启动才生效，不立即生效）
-sudo nixos-rebuild boot
+sudo nixos-rebuild boot --flake .#
 
 # 使配置立即生效并将修改完的配置加入到 grub 选项并命名为 test.
 sudo nixos-rebuild switch -p test
